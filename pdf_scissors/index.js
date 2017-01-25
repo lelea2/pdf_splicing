@@ -10,7 +10,7 @@ var page = pdf.pages(2);
 // console.log(pages);
 
 // pages.pdfStream().pipe(fs.createWriteStream(__dirname + '/../mock/output/scissor_test.pdf'));
-page.pdfStream().pipe(fs.createWriteStream(__dirname + '/../mock/output/test_page.pdf'));
+var stream = page.pdfStream().pipe(fs.createWriteStream(__dirname + '/../mock/output/test_page.pdf'));
 
 // All content
 pdf.contentStream().on('data', function (item) {
@@ -19,4 +19,15 @@ pdf.contentStream().on('data', function (item) {
   } else if (item.type == 'image') {
     console.log(item);
   }
+});
+
+stream.on('finish', function() {
+  // // Return and download.
+  // res.download(output);
+  console.log('finish');
+});
+
+
+stream.on('error', function(err) {
+  console.log(err);
 });
